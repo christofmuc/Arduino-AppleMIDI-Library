@@ -1,6 +1,5 @@
 #include "Ethernet.h"
 
-#define DEBUG 7
 #define APPLEMIDI_INITIATOR
 
 #include "AppleMIDI.h"
@@ -35,8 +34,6 @@ APPLEMIDI_CREATE_DEFAULTSESSION_INSTANCE();
 // -----------------------------------------------------------------------------
 void OnAppleMidiConnected(const ssrc_t & ssrc, const char* name) {
   isConnected = true;
-  N_DEBUG_PRINT(F("Connected to session "));
-  N_DEBUG_PRINTLN(name);
 }
 
 // -----------------------------------------------------------------------------
@@ -44,39 +41,24 @@ void OnAppleMidiConnected(const ssrc_t & ssrc, const char* name) {
 // -----------------------------------------------------------------------------
 void OnAppleMidiDisconnected(const ssrc_t & ssrc) {
   isConnected = false;
-  N_DEBUG_PRINTLN(F("Disconnected"));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void OnAppleMidiByte(const ssrc_t & ssrc, byte data) {
-  N_DEBUG_PRINT(F("MIDI: "));
-  N_DEBUG_PRINTLN(data);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 static void OnMidiNoteOn(byte channel, byte note, byte velocity) {
-  N_DEBUG_PRINT(F("Incoming NoteOn from channel: "));
-  N_DEBUG_PRINT(channel);
-  N_DEBUG_PRINT(F(", note: "));
-  N_DEBUG_PRINT(note);
-  N_DEBUG_PRINT(F(", velocity: "));
-  N_DEBUG_PRINTLN(velocity);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 static void OnMidiNoteOff(byte channel, byte note, byte velocity) {
-  N_DEBUG_PRINT(F("Incoming NoteOff from channel: "));
-  N_DEBUG_PRINT(channel);
-  N_DEBUG_PRINT(F(", note: "));
-  N_DEBUG_PRINT(note);
-  N_DEBUG_PRINT(F(", velocity: "));
-  N_DEBUG_PRINTLN(velocity);
 }
 
 // -----------------------------------------------------------------------------
@@ -95,28 +77,10 @@ char getSysExStatus(const byte* data, uint16_t length)
 }
 
 static void OnMidiSystemExclusive(byte* array, unsigned size) {
-    N_DEBUG_PRINT(F("Incoming SysEx: "));
-    N_DEBUG_PRINT(getSysExStatus(array, size));
-    unsigned i = 0;
-    for (; i < size - 1; i++)
-    {
-        N_DEBUG_PRINT(F(" 0x"));
-        N_DEBUG_PRINT(array[i], HEX);
-    }
-    N_DEBUG_PRINT(F(" 0x"));
-    N_DEBUG_PRINT(array[i], HEX);
-    N_DEBUG_PRINTLN();
 }
 
 void begin()
 {
-    V_DEBUG_PRINTLN(F("OK, now make sure you an rtpMIDI session that is Enabled"));
-    V_DEBUG_PRINT(F("Add device named Arduino with Host/Port "));
-  //  V_DEBUG_PRINT(Ethernet.localIP());
-    V_DEBUG_PRINTLN(F(":5004"));
-    V_DEBUG_PRINTLN(F("Then press the Connect button"));
-    V_DEBUG_PRINTLN(F("Then open a MIDI listener (eg MIDI-OX) and monitor incoming notes"));
-
 	MIDI.begin(1);
     
     AppleMIDI.setHandleConnected(OnAppleMidiConnected);

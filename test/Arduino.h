@@ -56,8 +56,6 @@ int main()
 // avoid strncpy security warning
 #pragma warning(disable:4996)
 
-#define __attribute__(A) /* do nothing */
-
 #include "../src/utility/Deque.h"
 
 #include <midi_Defs.h>
